@@ -10,49 +10,54 @@
         header { background: #007bff; color: white; text-align: center; padding: 15px 10px; }
         header h1 { margin: 0; font-size: 22px; }
         .container { max-width: 600px; margin: 20px auto; padding: 0 15px; }
-        .card { background: white; padding: 20px; margin-bottom: 15px; border-radius: 10px; box-shadow: 0 4px 10px rgba(0,0,0,0.08); }
+        .card { background: white; padding: 20px; margin-bottom: 15px; border-radius: 10px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
         h2 { margin-top: 0; color: #007bff; }
         label { display: block; margin-top: 10px; margin-bottom: 5px; font-weight: bold; }
-        input, select, textarea { width: 100%; padding: 12px; border: 1px solid #ccc; border-radius: 5px; font-size: 15px; }
+        input, select, textarea { width: 100%; padding: 12px; border: 1px solid #ccc; border-radius: 5px; font-size: 14px; }
         textarea { min-height: 110px; }
         button { width: 100%; margin-top: 15px; padding: 12px; border: none; border-radius: 5px; background: #007bff; color: white; font-size: 16px; font-weight: bold; cursor: pointer; }
+        button:hover { background: #0056b3; }
     </style>
 </head>
 <body>
+
     <header>
-        <h1>Ward 20 जन समस्या एवं शिकायत पोर्टल</h1>
+        <h1>वार्ड 20 जन समस्या एवं शिकायत पोर्टल</h1>
     </header>
 
     <div class="container">
         <div class="card">
             <h2>अपनी समस्या दर्ज करें</h2>
-            <form action="https://formspree.io/f/mbglnvao" method="POST">
-                <label>आपका नाम:</label>
-                <input type="text" name="Naam" placeholder="पूरा नाम लिखें" required>
+            <form action="https://formspree.io/f/mbglnvao" method="POST" enctype="multipart/form-data">
+                <label>आपका नाम</label>
+                <input type="text" name="Name" placeholder="पूरा नाम दर्ज करें" required>
 
-                <label>मोबाइल नंबर:</label>
-                <input type="tel" name="Mobile" placeholder="10 अंकों का नंबर" required>
+                <label>मोबाइल नंबर</label>
+                <input type="tel" name="Mobile" placeholder="10 अंकों का मोबाइल नंबर" required>
 
-                <label>पता / क्षेत्र:</label>
-                <input type="text" name="Pata" placeholder="जैसे: गली नंबर 3, वार्ड 20" required>
+                <label>पता / वार्ड</label>
+                <input type="text" name="Pata" placeholder="जैसे: मकान नं. 5, वार्ड 20" required>
 
-                <label>समस्या की श्रेणी:</label>
+                <label>समस्या की श्रेणी</label>
                 <select name="Category" required>
                     <option value="">श्रेणी चुनें</option>
-                    <option value="सफाई / कचरा">सफाई / कचरा</option>
+                    <option value="सफाई की समस्या">सफाई की समस्या</option>
                     <option value="पानी की समस्या">पानी की समस्या</option>
                     <option value="सड़क / नाली">सड़क / नाली</option>
                     <option value="बिजली / स्ट्रीट लाइट">बिजली / स्ट्रीट लाइट</option>
-                    <option value="अन्य">अन्य</option>
+                    <option value="अन्य समस्या">अन्य समस्या</option>
                 </select>
 
-                <label>समस्या का विवरण:</label>
+                <label>समस्या का विवरण</label>
                 <textarea name="Samasya" placeholder="अपनी समस्या के बारे में विस्तार से लिखें..." required></textarea>
 
-                <button type="submit">शिकायत सबमिट करें</button>
+                <label>समस्या की फ़ोटो (Optional)</label>
+                <input type="file" name="attachment" accept="image/*">
+
+                <button type="submit">शिकायत दर्ज करें</button>
             </form>
         </div>
     </div>
+
 </body>
 </html>
-
