@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ward 20 – Jan Samasya Portal</title>
+
+<style>
+*{box-sizing:border-box}
+body{
+  margin:0;
+  font-family:Arial,sans-serif;
+  background:#f4f6f9;
+  color:#222;
+}
+header{
+  background:#173b72;
+  color:white;
+  text-align:center;
+  padding:28px 15px;
+}
+header h1{margin:0 0 8px;font-size:27px}
+header p{margin:5px 0}
+.container{
+  max-width:700px;
+  margin:20px auto;
+  padding:0 14px;
+}
+.card{
+  background:white;
+  padding:22px;
+  margin-bottom:18px;
+  border-radius:16px;
+  box-shadow:0 4px 18px rgba(0,0,0,.08);
+}
+h2{margin-top:0;color:#173b72}
+label{
+  display:block;
+  margin-top:13px;
+  margin-bottom:6px;
+  font-weight:bold;
+}
+input,select,textarea{
+  width:100%;
+  padding:12px;
+  border:1px solid #ccc;
+  border-radius:9px;
+  font-size:16px;
+}
+textarea{min-height:110px}
+button{
+  width:100%;
+  margin-top:16px;
+  padding:13px;
+  border:0;
+  border-radius:9px;
+  background:#173b72;
+  color:white;
+  font-size:17px;
+  font-weight:bold;
+}
+.result{
+  display:none;
+  margin-top:15px;
+  padding:15px;
+  border-radius:10px;
+  background:#e9f7ed;
+  border:1px solid #a9d9b4;
+}
+.note{
+  color:#666;
+  font-size:14px;
+  line-height:1.5;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+<h1>WARD 20 – JAN SAMASYA PORTAL</h1>
+<p>आकोला नगर पालिका</p>
+<p>नागरिक समस्या एवं शिकायत दर्ज करें</p>
+<p><b>संपर्क व्यक्ति: राजमल सरगरा</b></p>
+</header>
+
+<div class="container">
+
+<div class="card">
+<h2>📝 समस्या दर्ज करें</h2>
+
+<form id="complaintForm">
+
+<label>नाम</label>
+<input type="text" id="name" required>
+
+<label>मोबाइल नंबर</label>
+<input type="tel" id="mobile" maxlength="10" required>
+
+<label>मोहल्ला / स्थान</label>
+<input type="text" id="place" required>
+
+<label>समस्या की श्रेणी</label>
+<select id="category" required>
+<option value="">श्रेणी चुनें</option>
+<option>सड़क</option>
+<option>नाली</option>
+<option>पानी</option>
+<option>सफाई / कचरा</option>
+<option>स्ट्रीट लाइट</option>
+<option>अन्य</option>
+</select>
+
+<label>समस्या का विवरण</label>
+<textarea id="description" placeholder="अपनी समस्या यहाँ लिखें..." required></textarea>
+
+<label>समस्या की फोटो (वैकल्पिक)</label>
+<input type="file" accept="image/*">
+
+<button type="submit">समस्या दर्ज करें</button>
+
+</form>
+
+<div id="success" class="result"></div>
+</div>
+
+<div class="card">
+
+<h2>🔎 शिकायत की स्थिति देखें</h2>
+
+<p class="note">
+अपनी Complaint ID डालकर शिकायत की स्थिति देखें।
+</p>
+
+<input type="text" id="searchId" placeholder="जैसे W20-0001">
+
+<button onclick="checkStatus()">स्थिति देखें</button>
+
+<div id="statusResult" class="result"></div>
+
+</div>
+
+<div class="card">
+
+<h2>🏛️ आधिकारिक शिकायत</h2>
+
+<p class="note">
+यह स्थानीय नागरिक समस्या दर्ज करने के लिए बनाया गया पोर्टल है। सरकारी शिकायत के लिए Rajasthan Sampark का उपयोग करें।
+</p>
+
+<button onclick="window.open('https://sampark.rajasthan.gov.in/','_blank')">
+Rajasthan Sampark खोलें
+</button>
+
+</div>
+
+</div>
+
+<script>
+
+let complaints =
+JSON.parse(localStorage.getItem("ward20_complaints") || "{}");
+
+document.getElementById("complaintForm").addEventListener("submit",function(e){
+
+e.preventDefault();
+
+let number = Object.keys(complaints).length + 1;
+
+let id = "W20-" + String(number).padStart(4,"0");
+
+complaints[id] = {
+
+id:id,
+
+name:document.getElementById("name").value,
+
+mobile:document.getElementById("mobile").value,
+
+place:document.getElementById("place").value,
+
+category:document.getElementById("category").value,
+
+description:document.getElementById("description").value,
+
+status:"Received"
+
+};
+
+localStorage.setItem(
+"ward20_complaints",
+JSON.stringify(complaints)
+);
+
+let box=document.getElementById("success");
+
+box.style.display="block";
+
+box.innerHTML=
+"<b>✅ शिकायत सफलतापूर्वक दर्ज हो गई!</b><br><br>"+
+"आपकी Complaint ID: <b>"+id+"</b><br><br>"+
+"इस ID को संभालकर रखें।";
+
+this.reset();
+
+});
+
+function checkStatus(){
+
+let id=document.getElementById("searchId").value.trim().toUpperCase();
+
+let box=document.getElementById("statusResult");
+
+let complaints =
+JSON.parse(localStorage.getItem("ward20_complaints") || "{}");
+
+if(complaints[id]){
+
+let c=complaints[id];
+
+box.style.display="block";
+
+box.innerHTML=
+"<b>Complaint ID:</b> "+c.id+
+"<br><b>स्थान:</b> "+c.place+
+"<br><b>श्रेणी:</b> "+c.category+
+"<br><b>स्थिति:</b> "+c.status;
+
+}else{
+
+box.style.display="block";
+
+box.innerHTML=
+"❌ इस Complaint ID का रिकॉर्ड नहीं मिला।";
+
+}
+
+}
+
+</script>
+
+</body>
+</html>
